@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from auth.auth import router as auth_router
 import uvicorn
 
@@ -10,38 +11,25 @@ app = FastAPI(
     swagger_ui_parameters={"lang": "ru"}
 )
 
+origins = [
+    "https://pretty-keys-battle.loca.lt"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(auth_router)
-# class RegistrtationForm(BaseModel):
-#     username: str
-#     password: str
-#     phone: str
-    
-
-# class LoginForm(BaseModel):
-#     username: str
-#     password: str
-    
-
-# @app.post("/registration")
-# async def reg(data: RegistrtationForm):
-#     user = data.model_dump()
-#     MEMORY[user['username']] = user
-    
-#     return {'response': 'success'}
 
 
-# @app.post('/login')
-# async def login(data: LoginForm):
-#     pars = data.model_dump()
-#     user = pars.get('username')
+@app.get('/')
+async def index():
+    return {'response': 'Hello, world'}
     
-#     if MEMORY.get(user):
-#         mem = MEMORY.get(user)
-#         if mem['password'] == pars['password']:
-#             return {'response': mem}
-    
-#     return {'response': 'Не верный логин или пароль'}
-    
-    
-if __name__ == '__main__':
-    uvicorn.run('main:app', reload=True, port=8080, host='0.0.0.0')
+
+# if __name__ == '__main__':
+#     uvicorn.run('main:app', reload=True, port=5000, host='0.0.0.0')
