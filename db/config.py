@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
 
 
 class DatabaseSettings(BaseSettings):
@@ -15,6 +16,7 @@ class Config:
     
     def __init__(self):
         self.settings = DatabaseSettings()
+        self.engine: AsyncEngine = create_async_engine(self.async_url)
     
     @property
     def async_url(self):

@@ -12,7 +12,7 @@ app = FastAPI(
 )
 
 origins = [
-    "https://bright-areas-bake.loca.lt"
+    "https://pretty-keys-battle.loca.lt"
 ]
 
 app.add_middleware(

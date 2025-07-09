@@ -27,7 +27,7 @@ class UserAuth:
         self.jwt_secret = JWTSecret()
         self.bot_secret = BotSecret()
         
-    def create_acess_token(self, user_id: int, expire_minutes: int = 15):
+    async def create_acess_token(self, user_id: int, expire_minutes: int = 15):
         expire = datetime.now() + timedelta(minutes=expire_minutes)
         
         payload = {
@@ -38,7 +38,7 @@ class UserAuth:
         
         return jwt.encode(payload=payload, key=self.jwt_secret.SECRET, algorithm=self.jwt_secret.ALGORITHM)
             
-    def create_refresh_token(self, user_id: int, expire_days: int = 14):
+    async def create_refresh_token(self, user_id: int, expire_days: int = 14):
         expire = datetime.now() + timedelta(minutes=expire_days)
         
         payload = {
@@ -49,7 +49,7 @@ class UserAuth:
         
         return jwt.encode(payload=payload, key=self.jwt_secret.SECRET, algorithm=self.jwt_secret.ALGORITHM)
     
-    def decode_token(self, token: str):
+    async def decode_token(self, token: str):
         try:
             token = jwt.decode(jwt=token, key=self.jwt_secret.SECRET, algorithms=self.jwt_secret.ALGORITHM)
         except jwt.ExpiredSignatureError:
@@ -59,7 +59,7 @@ class UserAuth:
         
         return token
 
-    def telegram_validate(self, init_data: dict) -> dict | str:
+    async def telegram_validate(self, init_data: dict) -> dict | str:
         init_data = init_data['initData']
         
         vals = {k: unquote(v) for k, v in [s.split('=', 1) for s in init_data.split('&')]}
