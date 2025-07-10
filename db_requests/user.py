@@ -12,10 +12,11 @@ async def set_user(user_id: int):
     
     try:
         async with session() as session:
-            query = insert(User).values(id=user_id).returning(User)
-            result = await session.execute(query)
+            query = insert(User).values(id=user_id)
+            await session.execute(query)
             await session.commit()
-            new_user = result.scalar_one()
+            
+            new_user = get_user(user_id)['user']
             
             return {'user': new_user, 'code': 201}
     except Exception:

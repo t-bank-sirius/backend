@@ -16,7 +16,7 @@ app = FastAPI(
 )
 
 origins = [
-    "https://user365944644-jit7evql.tunnel.vk-apps.com"
+    "https://tricky-cows-stop.loca.lt"
 ]
 
 app.add_middleware(
@@ -36,4 +36,4 @@ async def index():
     
 
 if __name__ == '__main__':
-    uvicorn.run('main:app', reload=True, port=5000, host='0.0.0.0')
+    uvicorn.run('main:app', reload=True, port=8000, host='0.0.0.0')
