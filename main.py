@@ -3,6 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from auth.auth import router as auth_router
 import uvicorn
 
+from dotenv import load_dotenv
+
+import os
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'), override=True)
 
 app = FastAPI(
     title="Мой API",
@@ -12,7 +16,7 @@ app = FastAPI(
 )
 
 origins = [
-    "https://pretty-keys-battle.loca.lt"
+    "https://user365944644-jit7evql.tunnel.vk-apps.com"
 ]
 
 app.add_middleware(
@@ -31,5 +35,5 @@ async def index():
     return {'response': 'Hello, world'}
     
 
-# if __name__ == '__main__':
-#     uvicorn.run('main:app', reload=True, port=5000, host='0.0.0.0')
+if __name__ == '__main__':
+    uvicorn.run('main:app', reload=True, port=5000, host='0.0.0.0')

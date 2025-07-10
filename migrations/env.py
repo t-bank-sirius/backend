@@ -8,6 +8,10 @@ from alembic import context
 from db.model import User
 from db.config import Config
 
+from dotenv import load_dotenv
+
+import os
+load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'), override=True)
 
 # Alembic Config
 cfg = Config()

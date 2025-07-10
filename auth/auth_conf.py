@@ -39,7 +39,7 @@ class UserAuth:
         return jwt.encode(payload=payload, key=self.jwt_secret.SECRET, algorithm=self.jwt_secret.ALGORITHM)
             
     async def create_refresh_token(self, user_id: int, expire_days: int = 14):
-        expire = datetime.now() + timedelta(minutes=expire_days)
+        expire = datetime.now() + timedelta(days=expire_days)
         
         payload = {
             "sub": str(user_id),
