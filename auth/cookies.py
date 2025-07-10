@@ -9,7 +9,7 @@ async def cookies(response: JSONResponse, access, refresh):
         httponly=True,
         secure=True,
         samesite='strict',
-        max_age=timedelta(minutes=120).total_seconds()
+        max_age=timedelta(minutes=120).total_seconds() # 120 минут
         )
     
     response.set_cookie(
@@ -18,7 +18,7 @@ async def cookies(response: JSONResponse, access, refresh):
         httponly=True,
         secure=True,
         samesite='strict',
-        max_age=timedelta(days=14).total_seconds()
+        max_age=timedelta(days=14).total_seconds() # 14 дней
     )
     
     return response

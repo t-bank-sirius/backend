@@ -36,8 +36,9 @@ async def login_user(data: InitData):
             final_data['accessToken'] = access_token
             
             response = JSONResponse(content=final_data)
-            # response = cookies(response=response)
+            # response = cookies(response=response) Чекни, что тут и если что, подправь(Бауэру)
             
+            #  Я просто не понял. В итоге лучше с access сделать? Без http only refresh. Он нам по факту не нужен
             return response
         
         return JSONResponse(content=response_db['message'], status_code=response_db['code'])
@@ -66,7 +67,9 @@ async def login_user(data: InitData):
             final_data['accessToken'] = access_token
 
             response = JSONResponse(content=final_data)
-            # response = cookies(response=response)
+            # response = cookies(response=response) Чекни, что тут и если что, подправь(Бауэру)
+            #  Я просто не понял. В итоге лучше с access сделать? Без http only refresh. Он нам по факту не нужен
+
             
             return response
         
