@@ -6,7 +6,10 @@ import uvicorn
 from dotenv import load_dotenv
 
 import os
+
+
 load_dotenv(os.path.join(os.path.dirname(__file__), '.env'), override=True)
+
 
 app = FastAPI(
     title="Мой API",
@@ -15,9 +18,11 @@ app = FastAPI(
     swagger_ui_parameters={"lang": "ru"}
 )
 
+
 origins = [
-    "https://tricky-cows-stop.loca.lt"
+    "https://little-falcons-tell.loca.lt"
 ]
+
 
 app.add_middleware(
     CORSMiddleware,

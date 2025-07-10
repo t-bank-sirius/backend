@@ -16,10 +16,11 @@ async def set_user(user_id: int):
             await session.execute(query)
             await session.commit()
             
-            new_user = get_user(user_id)['user']
+            new_user = await get_user(user_id)
             
-            return {'user': new_user, 'code': 201}
-    except Exception:
+            return {'user': new_user['user'], 'code': 201}
+    except Exception as er:
+            print(er)
             return {'message': 'Такой пользователь уже существует или вы ввели не корректные данные', 'code': 409}
     finally:
         await cfg.engine.dispose()
