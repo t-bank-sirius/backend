@@ -3,7 +3,6 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from .auth_conf import UserAuth
-from .cookies import cookies
 from db.character_parser import final_data_user
 from db_requests.user import set_user, get_user, get_characters
 
@@ -31,15 +30,11 @@ async def login_user(data: InitData):
             
             final_data = await final_data_user(user_id=user_id, chosen_character=user.chosen, characters=characters)
             
-            access_token = await auth.create_acess_token(user_id=user_id, expire_minutes=120)
+            access_token = await auth.create_acess_token(user_id=user_id, expire_minutes=auth.jwt_secret.ACCESS_TOKEN_EXPIRE_MINUTES)
             
             final_data['accessToken'] = access_token
             
-            response = JSONResponse(content=final_data)
-            # response = cookies(response=response) Чекни, что тут и если что, подправь(Бауэру)
-            
-            #  Я просто не понял. В итоге лучше с access сделать? Без http only refresh. Он нам по факту не нужен
-            return response
+            return JSONResponse(content=final_data)
         
         return JSONResponse(content=response_db['message'], status_code=response_db['code'])
     
@@ -62,15 +57,10 @@ async def login_user(data: InitData):
             
             final_data = await final_data_user(user_id=user_id, chosen_character=user.chosen, characters=characters)
             
-            access_token = await auth.create_acess_token(user_id=user_id, expire_minutes=120)
+            access_token = await auth.create_acess_token(user_id=user_id, expire_minutes=auth.jwt_secret.ACCESS_TOKEN_EXPIRE_MINUTES)
             
             final_data['accessToken'] = access_token
-
-            response = JSONResponse(content=final_data)
-            # response = cookies(response=response) Чекни, что тут и если что, подправь(Бауэру)
-            #  Я просто не понял. В итоге лучше с access сделать? Без http only refresh. Он нам по факту не нужен
-
             
-            return response
+            return JSONResponse(content=final_data)
         
     return JSONResponse(content={'response': 'access denied'}, status_code=403)

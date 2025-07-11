@@ -11,6 +11,7 @@ import jwt
 class JWTSecret(BaseSettings):
     SECRET: str
     ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: str
     
     model_config = SettingsConfigDict(env_prefix="JWT_")
 
@@ -27,23 +28,12 @@ class UserAuth:
         self.jwt_secret = JWTSecret()
         self.bot_secret = BotSecret()
         
-    async def create_acess_token(self, user_id: int, expire_minutes: int = 15):
+    async def create_acess_token(self, user_id: int, expire_minutes: int = 120):
         expire = datetime.now() + timedelta(minutes=expire_minutes)
         
         payload = {
             "sub": str(user_id),
             "type": "access",
-            "exp": expire
-            }
-        
-        return jwt.encode(payload=payload, key=self.jwt_secret.SECRET, algorithm=self.jwt_secret.ALGORITHM)
-            
-    async def create_refresh_token(self, user_id: int, expire_days: int = 14):
-        expire = datetime.now() + timedelta(days=expire_days)
-        
-        payload = {
-            "sub": str(user_id),
-            "type": "refresh",
             "exp": expire
             }
         
