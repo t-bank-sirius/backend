@@ -7,7 +7,7 @@ async def is_auth(headers, auth):
     if access_token is None:
         return JSONResponse({'response': 'Вы не передали access token'}, 403)
     
-    validate = auth.decode_token(access_token)
+    validate = await auth.decode_token(access_token)
     
     if isinstance(validate, str):
         return JSONResponse({'response': validate}, 403)

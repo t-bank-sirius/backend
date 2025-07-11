@@ -3,8 +3,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from .auth_conf import UserAuth
-from db.character_parser import final_data_user
-from db_requests.user import set_user, get_user, get_characters
+from db_requests.user import set_user, get_user
 
 
 router = APIRouter(prefix='/auth', tags=['Работа с авторизации'])
@@ -24,17 +23,9 @@ async def login_user(data: InitData):
     if verify['result']:
         response_db = await get_user(user_id)
         
-        if response_db['code'] == 200:
-            user = response_db['user']
-            characters = await get_characters(user_id)
-            
-            final_data = await final_data_user(user_id=user_id, chosen_character=user.chosen, characters=characters)
-            
-            access_token = await auth.create_acess_token(user_id=user_id, expire_minutes=auth.jwt_secret.ACCESS_TOKEN_EXPIRE_MINUTES)
-            
-            final_data['accessToken'] = access_token
-            
-            return JSONResponse(content=final_data)
+        if response_db['code'] == 200:    
+            access_token = await auth.create_acess_token(user_id=user_id, expire_minutes=auth.jwt_secret.ACCESS_TOKEN_EXPIRE_MINUTES)            
+            return JSONResponse(content={'accessToken': access_token})
         
         return JSONResponse(content=response_db['message'], status_code=response_db['code'])
     
@@ -51,16 +42,10 @@ async def login_user(data: InitData):
     if verify['result']:
         response_db = await set_user(user_id)
         
-        if response_db['code'] == 201:
-            user = response_db['user']
-            characters = await get_characters(user_id)
-            
-            final_data = await final_data_user(user_id=user_id, chosen_character=user.chosen, characters=characters)
-            
+        if response_db['code'] == 201:            
             access_token = await auth.create_acess_token(user_id=user_id, expire_minutes=auth.jwt_secret.ACCESS_TOKEN_EXPIRE_MINUTES)
-            
-            final_data['accessToken'] = access_token
-            
-            return JSONResponse(content=final_data)
+            return JSONResponse(content={'accessToken': access_token})
+        
+        return JSONResponse(content={'response': response_db['message']})
         
     return JSONResponse(content={'response': 'access denied'}, status_code=403)

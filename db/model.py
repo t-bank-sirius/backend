@@ -5,12 +5,8 @@ from sqlalchemy import (
     String,
     Boolean,
     ForeignKey,
-    Enum
+    Text
 )
-
-from sqlalchemy.dialects.postgresql import JSONB
-import enum
-
 
 class Model(DeclarativeBase):
     ...
@@ -24,11 +20,6 @@ class User(Model):
     
     chosen = relationship('Character', foreign_keys=[chosen_character], lazy='selectin')
     characters = relationship('Character', back_populates='user', foreign_keys='Character.user_id', lazy='selectin')
-        
-
-class SexEnum(enum.Enum):
-    male = "male"
-    female = "female"
 
 
 class Character(Model):
@@ -39,11 +30,8 @@ class Character(Model):
     user = relationship('User', back_populates='characters', foreign_keys=[user_id])
 
     name: Mapped[str] = mapped_column(String(32), nullable=False)
-    is_default: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    avatar_url: Mapped[str] = mapped_column(String(220), nullable=True)
-    sex: Mapped[SexEnum] = mapped_column(Enum(SexEnum), nullable=False)
-    interests: Mapped[list[str]] = mapped_column(JSONB, default=list, nullable=False)
-    abilities: Mapped[list[str]] = mapped_column(JSONB, default=list, nullable=False)
-    places: Mapped[list[str]] = mapped_column(JSONB, default=list, nullable=False)
-    additional_details: Mapped[str] = mapped_column(String(250), nullable=True)
+    is_generated: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    avatar_img_url: Mapped[str] = mapped_column(String(220), nullable=True)
+    system_prompt: Mapped[str] = mapped_column(Text, nullable=False)
+    init_message: Mapped[str] = mapped_column(Text, nullable=False)
     subtitle: Mapped[str] = mapped_column(String(120), nullable=True)
