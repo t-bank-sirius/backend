@@ -59,7 +59,7 @@ async def get_characters(user_id: int):
                 )
             response = await session.execute(query_characters)
             
-            return response.fetchall()
+            return response.scalars().all()
     finally:
         await cfg.engine.dispose()
     
