@@ -1,17 +1,13 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
 
 from .auth_conf import UserAuth
-from db_requests.user import set_user, get_user
+from my_requests.db.user import set_user, get_user
+from models.validators import InitData
 
 
 router = APIRouter(prefix='/auth', tags=['Работа с авторизации'])
 
-
-class InitData(BaseModel):
-    initData: str
-        
 
 @router.post('/login')
 async def login_user(data: InitData):

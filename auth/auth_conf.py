@@ -1,26 +1,11 @@
-import asyncio
 from urllib.parse import unquote
 from datetime import timedelta, datetime
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from models.settings import JWTSecret, BotSecret
 
 import json
 import hmac
 import hashlib
 import jwt
-    
-    
-class JWTSecret(BaseSettings):
-    SECRET: str
-    ALGORITHM: str
-    ACCESS_TOKEN_EXPIRE_MINUTES: int
-    
-    model_config = SettingsConfigDict(env_prefix="JWT_")
-
-
-class BotSecret(BaseSettings):
-    TOKEN: str
-    
-    model_config = SettingsConfigDict(env_prefix="BOT_")
     
     
 class UserAuth:

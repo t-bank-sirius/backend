@@ -21,7 +21,7 @@ app = FastAPI(
 
 
 origins = [
-    "https://little-falcons-tell.loca.lt"
+    "https://all-squids-film.loca.lt"
 ]
 
 

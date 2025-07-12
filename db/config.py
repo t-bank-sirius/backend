@@ -1,15 +1,5 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine
-
-
-class DatabaseSettings(BaseSettings):
-    USER: str
-    PASSWORD: str
-    HOST: str
-    PORT: int
-    DB: str
-
-    model_config = SettingsConfigDict(env_prefix='POSTGRES_')
+from models.settings import DatabaseSettings
 
 
 class Config:

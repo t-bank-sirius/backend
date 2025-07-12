@@ -3,7 +3,8 @@ from fastapi.responses import JSONResponse
 
 async def is_auth(headers, auth):
     access_token = headers.get('Authorization')
-    
+    access_token = access_token.split('Bearer ')[-1]
+
     if access_token is None:
         return JSONResponse({'response': 'Вы не передали access token'}, 403)
     
