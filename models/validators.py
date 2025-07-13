@@ -12,3 +12,13 @@ class NewMessage(BaseModel):
 
 class InitData(BaseModel):
     initData: str
+
+
+class CreateCharacter(BaseModel):
+    avatar_img_url: str
+    shape: dict
+    name: str
+    sex: str
+    interests: list[str]
+    abilities: list[str]
+    places: list[str]

@@ -5,7 +5,7 @@ from my_requests.db.user import get_characters, set_user_character, get_user
 from my_requests.servers.requests import say_hello, llm
 from db.model import User, Character
 from .validations import is_auth
-from models.validators import NewMessage, PostCharacter
+from models.validators import NewMessage, PostCharacter, CreateCharacter
 
 
 router = APIRouter(prefix='/user', tags=['Работа с пользователем'])
@@ -13,9 +13,6 @@ router = APIRouter(prefix='/user', tags=['Работа с пользовател
         
 @router.get("/get-characters")
 async def get_all_characters(request: Request, owns: bool = Query( ... )):
-    """
-    Функция возвращает как всех default персонажей, так и персонажей которые сгенерировал пользователь (Если такие есть)
-    """
     auth = UserAuth()
     headers = request.headers
    
@@ -83,3 +80,8 @@ async def new_message(data: NewMessage, request: Request):
     
     
     return response_llm
+
+
+@router.post('/new-character')
+async def create_new_character(data: CreateCharacter):
+    ...

@@ -6,7 +6,7 @@ from my_requests.db.user import set_user, get_user
 from models.validators import InitData
 
 
-router = APIRouter(prefix='/auth', tags=['Работа с авторизации'])
+router = APIRouter(prefix='/auth', tags=['Работа с авторизацией'])
 
 
 @router.post('/login')
@@ -29,7 +29,7 @@ async def login_user(data: InitData):
 
 
 @router.post('/register')
-async def login_user(data: InitData):
+async def register_user(data: InitData):
     auth = UserAuth()
     
     verify = await auth.telegram_validate(init_data=data.model_dump())
