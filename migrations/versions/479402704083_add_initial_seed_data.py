@@ -1,22 +1,23 @@
-"""initial_datas
+"""add initial seed data
 
-Revision ID: 6c73d59b7c12
-Revises: b5db40762312
-Create Date: 2025-07-15 17:10:42.973795
+Revision ID: 479402704083
+Revises: c6306e343a06
+Create Date: 2025-07-15 23:32:08.292526
 
 """
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.sql import table, column
+from sqlalchemy.sql import column, table
 
 
 # revision identifiers, used by Alembic.
-revision: str = '6c73d59b7c12'
-down_revision: Union[str, Sequence[str], None] = 'b5db40762312'
+revision: str = '479402704083'
+down_revision: Union[str, Sequence[str], None] = 'c6306e343a06'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
+
 
 characters_table = table(
     'characters',
