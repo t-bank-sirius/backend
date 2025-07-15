@@ -65,7 +65,6 @@ async def new_message(data: NewMessage, request: Request):
     user_id = data.telegram_id
     message = data.message_text
     image = data.image
-    print(image[:40])
     print(f'Я получил user_id: {user_id} и message: {message}\n')
     
     user = await get_user(user_id=user_id)

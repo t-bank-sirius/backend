@@ -32,9 +32,9 @@ async def llm(message: str, user_id: str, role: str, system_prompt: str, image_b
     timeout = ClientTimeout(total=240)
     try:
         async with ClientSession() as session:
-            async with session.post('https://b89n2o-217-151-231-207.ru.tuna.am/generate', json=data_to_request) as response:
+            async with session.post('https://horhl1-217-151-231-207.ru.tuna.am/generate', json=data_to_request) as response:
                 resp = await response.json()
-                
+                print(resp)
                 return JSONResponse(content={'message': resp['message'], 'image': resp['image']})
     except Exception as er:
         print('Ошибка в функции llm', er)
