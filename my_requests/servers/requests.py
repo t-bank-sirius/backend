@@ -1,4 +1,4 @@
-from aiohttp import ClientSession
+from aiohttp import ClientSession, ClientTimeout
 from fastapi.responses import JSONResponse
 
 
@@ -29,12 +29,13 @@ async def llm(message: str, user_id: str, role: str, system_prompt: str, image_b
         "max_iterations": 3
     }
     
+    timeout = ClientTimeout(total=240)
     try:
         async with ClientSession() as session:
-            async with session.post('https://48lqvc-217-151-231-207.ru.tuna.am/generate', json=data_to_request) as response:
+            async with session.post('https://b89n2o-217-151-231-207.ru.tuna.am/generate', json=data_to_request) as response:
                 resp = await response.json()
                 
                 return JSONResponse(content={'message': resp['message'], 'image': resp['image']})
     except Exception as er:
         print('Ошибка в функции llm', er)
-        return JSONResponse(content=str(er), status_code=400)
+        return JSONResponse(content='Ошибка на стороне llm :( (Мы это починим, честно)', status_code=400)

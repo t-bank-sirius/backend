@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from auth.auth import router as auth_router
 from user.user import router as user_router
 import uvicorn
@@ -18,6 +19,7 @@ app = FastAPI(
     version="1.0.0",
     swagger_ui_parameters={"lang": "ru"}
 )
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 
 origins = [
