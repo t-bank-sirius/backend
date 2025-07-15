@@ -16,9 +16,9 @@ class User(Model):
     __tablename__ = 'users'
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    chosen_character = mapped_column(ForeignKey('characters.id', ondelete='CASCADE'), nullable=True)
+    chosen_character = mapped_column(ForeignKey('characters.id', ondelete='CASCADE', use_alter=True), nullable=True)
     
-    chosen = relationship('Character', foreign_keys=[chosen_character], lazy='selectin')
+    chosen = relationship('Character', foreign_keys=[chosen_character], lazy='selectin', post_update=True)
     characters = relationship('Character', back_populates='user', foreign_keys='Character.user_id', lazy='selectin')
 
 
