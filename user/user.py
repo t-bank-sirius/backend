@@ -70,12 +70,12 @@ async def new_message(data: NewMessage, request: Request):
     user = await get_user(user_id=user_id)
     
     if user['code'] != 200:
-        return JSONResponse(content=user['message'], status_code=user['code'])
+        return JSONResponse(content=user, status_code=user['code'])
 
     character: Character = user['user'].chosen
     
     if character is None:
-        return JSONResponse(content='У вас нет выбраного персонажа', status_code=404)
+        return JSONResponse(content={'message': 'У вас нет выбраного персонажа'}, status_code=404)
     
     response_llm = await llm(
         message=message,
