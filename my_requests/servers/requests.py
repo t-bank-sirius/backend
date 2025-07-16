@@ -9,7 +9,7 @@ async def say_hello(chat_id: int, init_message: str):
     }
     try:
         async with ClientSession() as session:
-            async with session.post('http://host.docker.internal:8004/hello', json=data_to_bot) as response:
+            async with session.post('http://127.0.0.1:5000/hello', json=data_to_bot) as response:
                 print(f"Отправили привет в бот: {response.status}")
     except Exception as er:
         print('Ошибка в функции say_hello', er)
@@ -38,3 +38,29 @@ async def llm(message: str, user_id: str, role: str, system_prompt: str, image_b
     except Exception as er:
         print('Ошибка в функции llm', er)
         return JSONResponse(content='Ошибка на стороне llm :( (Мы это починим, честно)', status_code=400)
+
+
+async def generate_image(data: dict):
+    timeout = ClientTimeout(total=240)
+    
+    try:
+        async with ClientSession(timeout=timeout) as session:
+            async with session.post('http://host.docker.internal:8080/create_avatar/', json=data) as response:
+                resp = await response.json()
+                return JSONResponse(content={'image': resp['image']})
+    except Exception as er:
+        print('Ошибка в функции generate_image', er)
+        return JSONResponse(content='Ошибка на стороне llm_generate_image :( (Мы это починим, честно)', status_code=400)
+
+
+async def create_character(data: dict):
+    timeout = ClientTimeout(total=240)
+    
+    try:
+        async with ClientSession(timeout=timeout) as session:
+            async with session.post('http://host.docker.internal:8080/create_character/', json=data) as response:
+                resp = await response.json()
+                return resp
+    except Exception as er:
+        print('Ошибка в функции create_character', er)
+        return JSONResponse(content='Ошибка на стороне llm_create_character :( (Мы это починим, честно)', status_code=400)

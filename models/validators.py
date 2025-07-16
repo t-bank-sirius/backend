@@ -1,4 +1,3 @@
-from fastapi.requests import Request
 from pydantic import BaseModel
 
 
@@ -21,25 +20,7 @@ class CreateCharacter(BaseModel):
     shape: dict
     name: str
     sex: str
+    additionalDetails: str
     interests: list[str]
     abilities: list[str]
     places: list[str]
-
-
-class Characters(BaseModel):
-    id: int
-    user_id: int | None
-    name: str
-    is_generated: bool
-    avatar_img_url: str
-    system_prompt: str
-    init_message: str
-    subtitle: str
-    
-    class Config:
-        from_attributes = True
-        
-    def set_avatar_url(self, request: Request):
-        if self.avatar_img_url:
-            self.avatar_img_url = str(request.url_for("uploads", path=self.avatar_img_url))
-        

@@ -23,3 +23,9 @@ class DatabaseSettings(BaseSettings):
     DB: str
 
     model_config = SettingsConfigDict(env_prefix='POSTGRES_')
+
+
+class AppSettings(BaseSettings):
+    URL: str
+    
+    model_config = SettingsConfigDict(env_prefix='APP_')

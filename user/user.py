@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Request, Query
 from fastapi.responses import JSONResponse
 from auth.auth_conf import UserAuth
-from my_requests.db.user import get_characters, set_user_character, get_user
-from my_requests.servers.requests import say_hello, llm
+from my_requests.db.user import get_characters, set_user_character, get_user, set_character
+from my_requests.servers.requests import say_hello, llm, generate_image, create_character
 from db.model import User, Character
 from .validations import is_auth
-from models.validators import NewMessage, PostCharacter, CreateCharacter, Characters
+from models.validators import NewMessage, PostCharacter, CreateCharacter
 
 
 router = APIRouter(prefix='/user', tags=['Работа с пользователем'])
@@ -13,7 +13,6 @@ router = APIRouter(prefix='/user', tags=['Работа с пользовател
         
 @router.get("/get-characters")
 async def get_all_characters(request: Request, owns: bool = Query( ... )):
-    chars = []
     auth = UserAuth()
     headers = request.headers
    
@@ -24,15 +23,7 @@ async def get_all_characters(request: Request, owns: bool = Query( ... )):
     
     characters = await get_characters(user_id=int(is_authin['sub']), is_default=owns)
     
-    if isinstance(characters, JSONResponse):
-        return characters
-    
-    for character in characters:
-        char = Characters.from_orm(character)
-        char.set_avatar_url(request=request)
-        chars.append(char)
-    
-    return chars
+    return characters
 
 
 @router.post('/choose-character')
@@ -92,5 +83,47 @@ async def new_message(data: NewMessage, request: Request):
 
 
 @router.post('/new-character')
-async def create_new_character(data: CreateCharacter):
-    ...
+async def create_new_character(data: CreateCharacter, request: Request):
+    auth = UserAuth()
+    headers = request.headers
+    
+    is_authin = await is_auth(headers=headers, auth=auth)
+
+    if isinstance(is_authin, JSONResponse):
+        return is_authin
+    
+    dump = data.model_dump()
+    char =  await create_character(dump)
+    
+    if isinstance(char, JSONResponse):
+        return char
+    
+    data = {
+        'user_id': int(is_authin['sub']),
+        'name': dump['name'],
+        'is_generated': True,
+        'avatar_img_url': dump['avatar_img_url'],
+        'system_prompt': char['system_prompt'],
+        'init_message': char['init_message'],
+        'subtitle': char['subtitle']
+    }
+    await set_character(
+        **data
+    )
+    
+    return JSONResponse(content=data)
+    
+
+@router.post('/create_avatar')
+async def create_avat(data: CreateCharacter, request: Request):
+    auth = UserAuth()
+    headers = request.headers
+    
+    is_authin = await is_auth(headers=headers, auth=auth)
+
+    if isinstance(is_authin, JSONResponse):
+        return is_authin
+    
+    image = await generate_image(data=data.model_dump())
+    
+    return image
