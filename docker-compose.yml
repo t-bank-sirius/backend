@@ -12,8 +12,10 @@ services:
       - "8002:8002"
     depends_on:
       - database
-    networks:
-      - shared-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # networks:
+    #   - shared-net
 
   database:
     image: postgres:17-alpine
@@ -28,14 +30,10 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-    
-    networks:
-      - shared-net
+      
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 
 volumes:
   postgres_data:
-
-networks:
-  shared-net:
-    external: true

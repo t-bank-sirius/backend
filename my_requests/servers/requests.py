@@ -32,7 +32,7 @@ async def llm(message: str, user_id: str, role: str, system_prompt: str, image_b
     timeout = ClientTimeout(total=240)
     try:
         async with ClientSession(timeout=timeout) as session:
-            async with session.post('http://localhost:8080/generate', json=data_to_request) as response:
+            async with session.post('http://host.docker.internal:8080/generate', json=data_to_request) as response:
                 resp = await response.json()
                 return JSONResponse(content={'message': resp['message'], 'image': resp['image']})
     except Exception as er:
