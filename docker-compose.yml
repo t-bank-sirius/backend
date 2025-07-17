@@ -14,8 +14,7 @@ services:
       - database
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    # networks:
-    #   - shared-net
+
 
   database:
     image: postgres:17-alpine

@@ -9,7 +9,7 @@ async def say_hello(chat_id: int, init_message: str):
     }
     try:
         async with ClientSession() as session:
-            async with session.post('http://127.0.0.1:5000/hello', json=data_to_bot) as response:
+            async with session.post('http://host.docker.internal:8004/hello', json=data_to_bot) as response:
                 print(f"Отправили привет в бот: {response.status}")
     except Exception as er:
         print('Ошибка в функции say_hello', er)

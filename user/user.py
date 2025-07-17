@@ -38,6 +38,7 @@ async def choose_character(data: PostCharacter, request: Request):
     if isinstance(is_authin, JSONResponse):
         return is_authin
     
+    print(character_id, is_authin['sub'])
     set_char_user = await set_user_character(character_id=character_id, user_id=int(is_authin['sub']))
     
     if isinstance(set_char_user, JSONResponse):
@@ -93,6 +94,7 @@ async def create_new_character(data: CreateCharacter, request: Request):
         return is_authin
     
     dump = data.model_dump()
+    print(dump)
     char =  await create_character(dump)
     
     if isinstance(char, JSONResponse):

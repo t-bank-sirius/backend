@@ -1,9 +1,9 @@
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from auth.auth import router as auth_router
 from user.user import router as user_router
 from models.settings import AppSettings
-import uvicorn
 
 from dotenv import load_dotenv
 
@@ -20,10 +20,10 @@ app = FastAPI(
     swagger_ui_parameters={"lang": "ru"}
 )
 
-origins = [
-    AppSettings().URL
-]
 
+origins = [
+    'https://user541820783-lnjff3yb.tunnel.vk-apps.com'
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,9 +33,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+
 app.include_router(auth_router)
 app.include_router(user_router)
-
-
-if __name__ == '__main__':
-    uvicorn.run('main:app', reload=True, port=8000, host='0.0.0.0')
