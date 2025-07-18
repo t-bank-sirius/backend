@@ -21,7 +21,6 @@ depends_on: Union[str, Sequence[str], None] = None
 
 characters_table = table(
     'characters',
-    column('id', sa.Integer),
     column('user_id', sa.Integer),
     column('name', sa.String),
     column('is_generated', sa.Boolean),
@@ -35,7 +34,6 @@ characters_table = table(
 def upgrade() -> None:
     op.bulk_insert(characters_table, [
         {
-            'id': 1,
             'user_id': None,
             'name': 'Алекс',
             'is_generated': False,
@@ -69,7 +67,6 @@ def upgrade() -> None:
             'subtitle': 'Что сегодня решаем?'
         },
         {
-            'id': 2,
             'user_id': None,
             'name': 'Просто Джун',
             'is_generated': False,
@@ -106,7 +103,6 @@ def upgrade() -> None:
             'subtitle': 'Я умею садится на шпагат'
         },
         {
-            'id': 3,
             'user_id': None,
             'name': 'Лёня',
             'is_generated': False,

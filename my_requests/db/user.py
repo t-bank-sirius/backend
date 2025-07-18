@@ -98,7 +98,7 @@ async def set_character(
             await session.commit()
     finally:
         await cfg.engine.dispose()
-        
+    
 
 async def set_user_character(character_id: int, user_id: int):
     cfg = Config()

@@ -42,10 +42,13 @@ async def llm(message: str, user_id: str, role: str, system_prompt: str, image_b
 
 async def generate_image(data: dict):
     timeout = ClientTimeout(total=240)
+    data_send = {
+        'json_data': str(data)
+    }
     
     try:
         async with ClientSession(timeout=timeout) as session:
-            async with session.post('http://host.docker.internal:8080/create_avatar/', json=data) as response:
+            async with session.post('http://host.docker.internal:8080/create_avatar/', json=data_send) as response:
                 resp = await response.json()
                 return JSONResponse(content={'image': resp['image']})
     except Exception as er:
@@ -55,10 +58,13 @@ async def generate_image(data: dict):
 
 async def create_character(data: dict):
     timeout = ClientTimeout(total=240)
+    data_send = {
+        'json_data': str(data)
+    }
     
     try:
         async with ClientSession(timeout=timeout) as session:
-            async with session.post('http://host.docker.internal:8080/create_character/', json=data) as response:
+            async with session.post('http://host.docker.internal:8080/create_characters/', json=data_send) as response:
                 resp = await response.json()
                 return resp
     except Exception as er:

@@ -94,11 +94,12 @@ async def create_new_character(data: CreateCharacter, request: Request):
         return is_authin
     
     dump = data.model_dump()
-    print(dump)
     char =  await create_character(dump)
     
     if isinstance(char, JSONResponse):
         return char
+    
+    print(char)
     
     data = {
         'user_id': int(is_authin['sub']),

@@ -22,7 +22,7 @@ app = FastAPI(
 
 
 origins = [
-    'https://user541820783-lnjff3yb.tunnel.vk-apps.com'
+    'https://user541820783-z2uihaxm.tunnel.vk-apps.com'
 ]
 
 app.add_middleware(
