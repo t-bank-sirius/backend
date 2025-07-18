@@ -117,7 +117,7 @@ async def create_new_character(data: CreateCharacter, request: Request):
     return JSONResponse(content=data)
     
 
-@router.post('/create_avatar')
+@router.post('/create-avatar')
 async def create_avat(data: CreateCharacter, request: Request):
     auth = UserAuth()
     headers = request.headers

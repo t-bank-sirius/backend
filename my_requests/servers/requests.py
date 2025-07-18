@@ -1,21 +1,29 @@
 from aiohttp import ClientSession, ClientTimeout
 from fastapi.responses import JSONResponse
+from models.settings import AppSettings
+
+
+app = AppSettings()
 
 
 async def say_hello(chat_id: int, init_message: str):
+    url = app.BOT_URL
+    
     data_to_bot = {
         'chat_id': chat_id,
         'init_message': init_message
     }
     try:
         async with ClientSession() as session:
-            async with session.post('http://host.docker.internal:8004/hello', json=data_to_bot) as response:
+            async with session.post(f'http://host.docker.internal:8004/hello', json=data_to_bot) as response:
                 print(f"Отправили привет в бот: {response.status}")
     except Exception as er:
         print('Ошибка в функции say_hello', er)
 
 
 async def llm(message: str, user_id: str, role: str, system_prompt: str, image_base64: str = ''):
+    url = app.LLM_URL
+    
     data_to_request = {
         "message": message,
         "user_id": user_id,
@@ -32,7 +40,7 @@ async def llm(message: str, user_id: str, role: str, system_prompt: str, image_b
     timeout = ClientTimeout(total=240)
     try:
         async with ClientSession(timeout=timeout) as session:
-            async with session.post('http://host.docker.internal:8080/generate', json=data_to_request) as response:
+            async with session.post(f'{url}/generate', json=data_to_request) as response:
                 resp = await response.json()
                 return JSONResponse(content={'message': resp['message'], 'image': resp['image']})
     except Exception as er:
@@ -41,6 +49,8 @@ async def llm(message: str, user_id: str, role: str, system_prompt: str, image_b
 
 
 async def generate_image(data: dict):
+    url = app.LLM_URL
+    
     timeout = ClientTimeout(total=240)
     data_send = {
         'json_data': str(data)
@@ -48,7 +58,7 @@ async def generate_image(data: dict):
     
     try:
         async with ClientSession(timeout=timeout) as session:
-            async with session.post('http://host.docker.internal:8080/create_avatar/', json=data_send) as response:
+            async with session.post(f'{url}/create_avatar/', json=data_send) as response:
                 resp = await response.json()
                 return JSONResponse(content={'image': resp['image']})
     except Exception as er:
@@ -57,6 +67,8 @@ async def generate_image(data: dict):
 
 
 async def create_character(data: dict):
+    url = app.LLM_URL
+    
     timeout = ClientTimeout(total=240)
     data_send = {
         'json_data': str(data)
@@ -64,7 +76,7 @@ async def create_character(data: dict):
     
     try:
         async with ClientSession(timeout=timeout) as session:
-            async with session.post('http://host.docker.internal:8080/create_characters/', json=data_send) as response:
+            async with session.post(f'{url}/create_characters/', json=data_send) as response:
                 resp = await response.json()
                 return resp
     except Exception as er:

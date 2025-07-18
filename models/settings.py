@@ -26,6 +26,8 @@ class DatabaseSettings(BaseSettings):
 
 
 class AppSettings(BaseSettings):
-    URL: str
+    FRONTEND_URL: str
+    BOT_URL: str
+    LLM_URL: str
     
-    model_config = SettingsConfigDict(env_prefix='APP_')
+    model_config = SettingsConfigDict(env_prefix='SERVICE_')
