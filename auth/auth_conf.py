@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from urllib.parse import unquote
 from datetime import timedelta, datetime
 from models.settings import JWTSecret, BotSecret
@@ -48,4 +49,7 @@ class UserAuth:
         
         h = hmac.new(secret_key, data_check_string.encode(), hashlib.sha256)
 
-        return {"result": h.hexdigest() == vals['hash'], 'id': user_id}
+        if h.hexdigest() == vals['hash']:   
+            return user_id
+        
+        raise HTTPException(detail='Telegram Access denied')

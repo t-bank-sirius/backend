@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Request, Query, Depends, HTTPException
 from fastapi.responses import JSONResponse
-from auth.auth_conf import UserAuth
 from sqlalchemy.ext.asyncio import AsyncSession
 from my_requests.db.user import get_characters, set_user_character, get_user, set_character
 from my_requests.servers.requests import say_hello, llm, generate_image, create_character

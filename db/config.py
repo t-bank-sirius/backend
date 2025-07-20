@@ -15,5 +15,5 @@ class Config:
 
 
 cfg = Config()
-engine = create_async_engine(cfg.async_url, echo=True)
+engine = create_async_engine(cfg.async_url)
 SessionMaker = async_sessionmaker(engine, expire_on_commit=False)
