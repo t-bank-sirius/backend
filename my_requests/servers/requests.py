@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from aiohttp import ClientSession, ClientTimeout
 from fastapi.responses import JSONResponse
 from models.settings import AppSettings
@@ -15,7 +16,7 @@ async def say_hello(chat_id: int, init_message: str):
     }
     try:
         async with ClientSession() as session:
-            async with session.post(f'http://host.docker.internal:8004/hello', json=data_to_bot) as response:
+            async with session.post(f'{url}/hello', json=data_to_bot) as response:
                 print(f"Отправили привет в бот: {response.status}")
     except Exception as er:
         print('Ошибка в функции say_hello', er)
@@ -43,9 +44,10 @@ async def llm(message: str, user_id: str, role: str, system_prompt: str, image_b
             async with session.post(f'{url}/generate', json=data_to_request) as response:
                 resp = await response.json()
                 return JSONResponse(content={'message': resp['message'], 'image': resp['image']})
+            
     except Exception as er:
         print('Ошибка в функции llm', er)
-        return JSONResponse(content='Ошибка на стороне llm :( (Мы это починим, честно)', status_code=400)
+        raise HTTPException(detail='Ошибка на стороне llm :( (Мы это починим, честно)', status_code=400)
 
 
 async def generate_image(data: dict):
@@ -61,9 +63,10 @@ async def generate_image(data: dict):
             async with session.post(f'{url}/create_avatar/', json=data_send) as response:
                 resp = await response.json()
                 return JSONResponse(content={'image': resp['image']})
+            
     except Exception as er:
         print('Ошибка в функции generate_image', er)
-        return JSONResponse(content='Ошибка на стороне llm_generate_image :( (Мы это починим, честно)', status_code=400)
+        raise HTTPException(detail='Ошибка на стороне llm_generate_image :( (Мы это починим, честно)', status_code=400)
 
 
 async def create_character(data: dict):
@@ -79,6 +82,7 @@ async def create_character(data: dict):
             async with session.post(f'{url}/create_characters/', json=data_send) as response:
                 resp = await response.json()
                 return resp
+            
     except Exception as er:
         print('Ошибка в функции create_character', er)
-        return JSONResponse(content='Ошибка на стороне llm_create_character :( (Мы это починим, честно)', status_code=400)
+        raise HTTPException(detail='Ошибка на стороне llm_create_character :( (Мы это починим, честно)', status_code=400)

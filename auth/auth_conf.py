@@ -49,8 +49,3 @@ class UserAuth:
         h = hmac.new(secret_key, data_check_string.encode(), hashlib.sha256)
 
         return {"result": h.hexdigest() == vals['hash'], 'id': user_id}
-    
-
-# user = UserAuth()
-
-# print(asyncio.run(user.decode_token('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0IiwidHlwZSI6ImFjY2VzcyIsImV4cCI6MTc1MjIzNjE2MX0.zFWudAJ7vHIpOImdTIp2qCFPmx13BmmSqMMFk3o3Oa4')))

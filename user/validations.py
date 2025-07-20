@@ -1,16 +1,17 @@
-from fastapi.responses import JSONResponse
+from fastapi import Depends, Request, HTTPException
+from auth.auth_conf import UserAuth
 
 
-async def is_auth(headers, auth):
-    access_token = headers.get('Authorization', 'None')
+async def is_auth(request: Request, auth: UserAuth = Depends()):
+    access_token = request.headers.get('Authorization', 'None')
     access_token = access_token.split('Bearer ')[-1]
 
     if access_token is None:
-        return JSONResponse({'response': 'Вы не передали access token'}, 403)
+        raise HTTPException(detail='Вы не передали access token', status_code=403)
     
     validate = await auth.decode_token(access_token)
     
     if isinstance(validate, str):
-        return JSONResponse({'response': validate}, 403)
+        raise HTTPException(detail=validate, status_code=403)
     
     return validate
