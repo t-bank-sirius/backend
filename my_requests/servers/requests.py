@@ -62,7 +62,7 @@ async def generate_image(data: dict):
         async with ClientSession(timeout=timeout) as session:
             async with session.post(f'{url}/create_avatar/', json=data_send) as response:
                 resp = await response.json()
-                return JSONResponse(content={'image': resp['image']})
+                return JSONResponse(content={'image': resp['image'], 'error': resp['error']})
             
     except Exception as er:
         print('Ошибка в функции generate_image', er)
@@ -80,6 +80,47 @@ async def create_character(data: dict):
     try:
         async with ClientSession(timeout=timeout) as session:
             async with session.post(f'{url}/create_characters/', json=data_send) as response:
+                resp = await response.json()
+                return resp
+            
+    except Exception as er:
+        print('Ошибка в функции create_character', er)
+        raise HTTPException(detail='Ошибка на стороне llm_create_character :( (Мы это починим, честно)', status_code=400)
+
+
+async def clear_context(user_id: int, role: str):
+    url = app.LLM_URL
+    
+    timeout = ClientTimeout(total=240)
+    data_send = {
+        "user_id": str(user_id),
+        "role": role
+    }
+    
+    try:
+        async with ClientSession(timeout=timeout) as session:
+            async with session.post(f'{url}/delete_context/', json=data_send) as response:
+                resp = await response.json()
+                return resp
+            
+    except Exception as er:
+        print('Ошибка в функции create_character', er)
+        raise HTTPException(detail='Ошибка на стороне llm_create_character :( (Мы это починим, честно)', status_code=400)
+
+
+async def add_face(user_id: int, name: str, image: str):
+    url = app.LTM_URL
+    
+    timeout = ClientTimeout(total=240)
+    data_send = {
+        "user_id": str(user_id),
+        "name": name,
+        "image": image 
+}
+    
+    try:
+        async with ClientSession(timeout=timeout) as session:
+            async with session.post(f'{url}/add_face/', json=data_send) as response:
                 resp = await response.json()
                 return resp
             

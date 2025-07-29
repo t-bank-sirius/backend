@@ -41,6 +41,7 @@ def db_errors_to_http(func):
             )
 
         except StatementError as e:
+            print(e)
             raise HTTPException(
                 status_code=400, detail="Неправильный SQL-запрос"
             )

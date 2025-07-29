@@ -35,12 +35,11 @@ async def get_user(user_id: int, session: AsyncSession):
 
 @db_errors_to_http
 async def get_characters(user_id: int, is_default: bool, session: AsyncSession) -> list | JSONResponse:
-    query_characters = select(Character).where(
-                    or_(
-                        Character.user_id == user_id,
-                        Character.is_generated == is_default
-                    )
-                )
+    if not is_default:   
+        query_characters = select(Character).where(Character.is_generated == is_default)
+    else:
+        query_characters = select(Character).where(Character.user_id == user_id)
+        
     response = await session.execute(query_characters)
     return response.scalars().all()
     

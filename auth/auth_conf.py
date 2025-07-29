@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from urllib.parse import unquote
 from datetime import timedelta, datetime
-from models.settings import JWTSecret, BotSecret
+from models.settings import JWTSecret, BotSecret, AppSettingsBot
 
 import json
 import hmac
@@ -14,6 +14,7 @@ class UserAuth:
     def __init__(self):
         self.jwt_secret = JWTSecret()
         self.bot_secret = BotSecret()
+        self.app_secret = AppSettingsBot()
         
     async def create_acess_token(self, user_id: int, expire_minutes: int = 120):
         expire = datetime.now() + timedelta(minutes=expire_minutes)

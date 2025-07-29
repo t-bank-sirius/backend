@@ -15,3 +15,16 @@ async def is_auth(request: Request, auth: UserAuth = Depends()):
         raise HTTPException(detail=validate, status_code=403)
     
     return validate
+
+
+async def is_auth_headers(request: Request, auth: UserAuth = Depends()):
+    header_type = auth.app_secret.HEADER_TYPE
+    jwt_secret = auth.jwt_secret.SECRET
+    
+    headers = request.headers
+    valid_header = headers.get(header_type)
+    
+    if valid_header != jwt_secret:
+        raise HTTPException(detail='Access denied. Please, set header!', status_code=403)
+    
+    return True

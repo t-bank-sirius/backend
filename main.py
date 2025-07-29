@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from auth.auth import router as auth_router
 from user.user import router as user_router
 from models.settings import AppSettings
+from fastapi.staticfiles import StaticFiles
 
 from dotenv import load_dotenv
 
@@ -19,7 +20,7 @@ app = FastAPI(
     version="1.0.0",
     swagger_ui_parameters={"lang": "ru"}
 )
-
+app.mount("/avatars", StaticFiles(directory="uploads/avatars"), name="avatars") 
 
 origins = [
     AppSettings().FRONTEND_URL

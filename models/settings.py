@@ -29,5 +29,15 @@ class AppSettings(BaseSettings):
     FRONTEND_URL: str
     BOT_URL: str
     LLM_URL: str
+    LTM_URL: str
     
     model_config = SettingsConfigDict(env_prefix='SERVICE_')
+
+
+class AppSettingsBot(BaseSettings):
+    HEADER_TYPE: str
+    model_config = SettingsConfigDict(env_prefix='APP_')
+    
+
+class ServerUrl(BaseSettings):
+    SERVER_URL: str

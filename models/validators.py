@@ -20,7 +20,13 @@ class CreateCharacter(BaseModel):
     shape: dict
     name: str
     sex: str
+    appearance: str
+    archetypes: list[str]
     additionalDetails: str
     interests: list[str]
     abilities: list[str]
     places: list[str]
+    
+
+class OnlyUser(BaseModel):
+    telegram_id: int
